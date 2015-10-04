@@ -1,18 +1,15 @@
 /*
 Theme Name: fCorpo
 Description: fCorpo a perfect choice for your Corporate, Business, Company, Portfolio website or blog. The theme is Fully Responsive, Responsive Slider, Multi-Level Drop-Down Custom Menu, Admin Panel Options, W3C Markup Validated, Search Engine Optimized, Multiple Browsers, Page navigation, Threaded Comments, FontAwesome Icons, Custom Post Formats, and Translation Ready.
-Theme URI: http://tishonator.com/product/fcorpo
+Theme URI: https://tishonator.com/product/fcorpo
 Author: tishonator
-Author URI: http://tishonator.com
-Version: 1.0.0
+Author URI: https://tishonator.com
+Version: 1.0.4
 Text Domain: tishonator
-Tags: two-columns, right-sidebar, fixed-layout, fluid-layout, responsive-layout, custom-background, custom-colors, custom-header, custom-menu, featured-images, full-width-template, post-formats, sticky-post, theme-options, threaded-comments, translation-ready
+Tags: gray, orange, red, white, light, two-columns, right-sidebar, responsive-layout, custom-background, custom-colors, custom-header, custom-menu, featured-images, post-formats, sticky-post, threaded-comments, translation-ready
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
-
-/* import fonts */
-@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin,cyrillic-ext,cyrillic,latin-ext);
 
 @font-face {
   font-family: 'FontAwesome';
@@ -31,13 +28,11 @@ body {
 	font-size:13px;
 	margin:0;
 	padding:0;
-	background-color:#555555;
 	color:#666666;
 	width:100%;
 }
 
 #body-content-wrapper {
-	background-color:#fcfcfc;
 	position:relative;
 	overflow:hidden;
 }
@@ -382,6 +377,10 @@ article ul > li:before {
 
 #infoTxt {
 	padding:10px 0 10px 0;
+}
+
+#header-logo h1 {
+	padding-top:0;
 }
 
 article ul > li:before {
@@ -1210,6 +1209,35 @@ img.wp-post-image {
 	color:#858282 !important;
 }
 
+/* Text meant only for screen readers. */
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.screen-reader-text:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    color: #21759b;
+    display: block;
+    font-size: 14px;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000; /* Above WP toolbar. */
+}
+
 .wp-caption {
     padding:4px 4px 4px 4px;
     border:1px solid #ccc;
@@ -1222,6 +1250,7 @@ img.wp-post-image {
 	-webkit-border-radius:3px;
 	border-radius:3px;
 	max-width:95%;
+	clear:both;
 }
 
 .wp-caption p.wp-caption-text { 
@@ -1374,7 +1403,7 @@ img.wp-post-image {
 	
 	#header-logo {
 		float:left;
-		margin-top:5px;
+		margin-top:0;
 	}
 	
 	#header-logo img {
@@ -1598,7 +1627,7 @@ img.wp-post-image {
 	}
 	
 	#header-logo {
-		margin-top:5px;
+		margin-top:0;
 	}
 	
 	#header-logo {
@@ -1610,7 +1639,7 @@ img.wp-post-image {
 	#navmain {
 		cursor:pointer;
 		float:left;
-		margin-top:0;
+		margin-top:5px;
 	}
 	
 	#navmain div:first-of-type:before {

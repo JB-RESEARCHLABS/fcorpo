@@ -68,13 +68,35 @@
 	<?php if ( is_single() ) : ?>
 
 				<div class="content">
-					<?php fcorpo_the_content_single(); ?> 
+					<?php
+						/**
+						 * Display Thumbnails if thumbnail is set for the post
+						 */
+						if ( has_post_thumbnail() ) :
+
+							the_post_thumbnail();
+
+						endif;
+						
+						the_content( __( 'Read More...', 'fcorpo') );
+					?>
 				</div><!-- .content -->
 
 	<?php else : ?>
 
 				<div class="content">
-					<?php fcorpo_the_content(); ?>
+					<?php
+						/**
+						 * Display Thumbnails if thumbnail is set for the post
+						 */
+						if ( has_post_thumbnail() ) :
+
+							the_post_thumbnail();
+
+						endif;
+						
+						the_content( __( 'Read More...', 'fcorpo') );
+					?>
 				</div><!-- .content -->
 
 	<?php endif; ?>

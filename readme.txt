@@ -4,9 +4,9 @@ Thank you very much for choosing a WordPress theme from us! We really hope you w
 
 If you have any feedback for this theme or have any issues using it we'll be happy to get in touch with you. Please do not hesitate to contact us:
 
-Contact Form: http://tishonator.com/contacts
 
-Support Forum: http://tishonator.com/forums
+
+
 
 
 Best Regards,
@@ -33,11 +33,11 @@ Activiation and Use
 
 == Contacts ==
 
-Author Website: http://tishonator.com
+Author Website: https://tishonator.com
 
-Contact Form: http://tishonator.com/contacts
 
-General Tishonator Themes Documentation: http://tishonator.com/general-tishonator-wp-themes-documentation
 
-Support Forum: http://tishonator.com/forums
+
+
+
 

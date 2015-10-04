@@ -7,12 +7,21 @@
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<div class="page-content">
-		<?php fcorpo_the_content_single(); ?>
+		<?php
+			/**
+			 * Display Thumbnails if thumbnail is set for the post
+			 */
+			if ( has_post_thumbnail() ) :
+
+				the_post_thumbnail();
+
+			endif;
+			
+			the_content( __( 'Read More...', 'fcorpo') );
+		?>
 	</div>
 	<div class="page-after-content">
-		<span class="author-icon">
-			<?php the_author_posts_link(); ?>
-		</span>
+		
 		<?php if ( ! post_password_required() ) : ?>
 
 	<?php if ('open' == $post->comment_status) : ?>

@@ -14,16 +14,6 @@ Description: Used to style the TinyMCE editor.
   font-style: normal;
 }
 
-/* general styles */
-body {
-	font-family:'PT Sans','Segoe UI',Tahoma,Arial,sans-serif;
-	font-size:14px;
-	margin:0;
-	padding:0;
-	background-color:#ffffff;
-	color:#000000;
-}
-
 h1,
 h2,
 h3,
