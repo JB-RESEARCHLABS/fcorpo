@@ -20,12 +20,13 @@
  * For more information on hooks, actions, and filters,
  * {@link https://codex.wordpress.org/Plugin_API}
  *
- * @package WordPress
  * @subpackage fCorpo
  * @author tishonator
  * @since fCorpo 1.0.0
  *
  */
+
+require_once( trailingslashit( get_template_directory() ) . 'customize-pro/class-customize.php' );
 
 if ( ! function_exists( 'fcorpo_setup' ) ) {
 	/**
@@ -45,11 +46,12 @@ if ( ! function_exists( 'fcorpo_setup' ) ) {
 		add_theme_support( "title-tag" );
 
 		// add the visual editor to resemble the theme style
-		add_editor_style( array( 'css/editor-style.css' ) );
+		add_editor_style( array( 'css/editor-style.css', get_template_directory_uri() . '/css/font-awesome.min.css' ) );
 
 		// This theme uses wp_nav_menu() in two locations.
 		register_nav_menus( array(
-			'primary'   => __( 'primary menu', 'fcorpo' ),
+			'top'   => __( 'top menu', 'fcorpo' ),
+			'primary'   => __( 'Primary Menu', 'fcorpo' ),
 		) );
 
 		// add Custom background				 
@@ -59,8 +61,9 @@ if ( ! function_exists( 'fcorpo_setup' ) ) {
 
 
 		add_theme_support( 'post-thumbnails' );
-		set_post_thumbnail_size( 'full', 'full', true );
+		set_post_thumbnail_size( 1200, 0, true );
 
+		global $content_width;
 		if ( ! isset( $content_width ) )
 			$content_width = 900;
 
@@ -71,35 +74,31 @@ if ( ! function_exists( 'fcorpo_setup' ) ) {
 		 * to output valid HTML5.
 		 */
 		add_theme_support( 'html5', array(
-			'search-form', 'comment-form', 'comment-list',
+			'comment-form', 'comment-list',
 		) );
 
 		// add custom header
-		add_theme_support( 'custom-header', array (
-						   'default-image'          => '',
-						   'random-default'         => '',
-						   'width'                  => 145,
-						   'height'                 => 36,
-						   'flex-height'            => '',
-						   'flex-width'             => '',
-						   'default-text-color'     => '',
-						   'header-text'            => '',
-						   'uploads'                => true,
-						   'wp-head-callback'       => '',
-						   'admin-head-callback'    => '',
-						   'admin-preview-callback' => '',
-						) );
+	    add_theme_support( 'custom-header', array (
+	                       'default-image'          => '',
+	                       'random-default'         => '',
+	                       'flex-height'            => true,
+	                       'flex-width'             => true,
+	                       'uploads'                => true,
+	                       'width'                  => 900,
+	                       'height'                 => 100,
+	                       'default-text-color'        => '#000000',
+	                       'wp-head-callback'       => 'fcorpo_header_style',
+	                    ) );
 
-		// add support for Post Formats.
-		add_theme_support( 'post-formats', array (
-												'aside',
-												'image',
-												'video',
-												'audio',
-												'quote', 
-												'link',
-												'gallery',
-						) );
+	    // add custom logo
+	    add_theme_support( 'custom-logo', array (
+	                       'width'                  => 145,
+	                       'height'                 => 36,
+	                       'flex-height'            => true,
+	                       'flex-width'             => true,
+	                    ) );
+
+		
 	}
 } // fcorpo_setup
 add_action( 'after_setup_theme', 'fcorpo_setup' );
@@ -112,6 +111,7 @@ add_action( 'after_setup_theme', 'fcorpo_setup' );
 function fcorpo_load_scripts() {
 
 	// load main stylesheet.
+	wp_enqueue_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array( ) );
 	wp_enqueue_style( 'fcorpo-style', get_stylesheet_uri(), array( ) );
 	
 	wp_enqueue_style( 'fcorpo-fonts', fcorpo_fonts_url(), array(), null );
@@ -125,9 +125,9 @@ function fcorpo_load_scripts() {
 	wp_enqueue_script( 'fcorpo-js', get_template_directory_uri() . '/js/utilities.js', array( 'jquery' ) );
 
 	// Load Slider JS Scripts
-	wp_enqueue_script( 'fcorpo-jquery-mobile-js', get_template_directory_uri() . '/js/jquery.mobile.customized.min.js', array( 'jquery' ) );
-	wp_enqueue_script( 'fcorpo-jquery-easing-js', get_template_directory_uri() . '/js/jquery.easing.1.3.js', array( 'jquery' ) );
-	wp_enqueue_script( 'fcorpo-camera-js', get_template_directory_uri() . '/js/camera.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery.mobile.customized', get_template_directory_uri() . '/js/jquery.mobile.customized.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'jquery.easing.1.3', get_template_directory_uri() . '/js/jquery.easing.1.3.js', array( 'jquery' ) );
+	wp_enqueue_script( 'camera', get_template_directory_uri() . '/js/camera.min.js', array( 'jquery' ) );
 }
 add_action( 'wp_enqueue_scripts', 'fcorpo_load_scripts' );
 
@@ -142,16 +142,16 @@ function fcorpo_fonts_url() {
     * supported by PT Sans, translate this to 'off'. Do not translate
     * into your own language.
     */
-    $cantarell = _x( 'on', 'PT Sans font: on or off', 'fcorpo' );
+    $cantarell = _x( 'on', 'Dosis font: on or off', 'fcorpo' );
 
     if ( 'off' !== $cantarell ) {
         $font_families = array();
  
-        $font_families[] = 'PT Sans';
+        $font_families[] = 'Dosis::400,300,200,500,700';
  
         $query_args = array(
             'family' => urlencode( implode( '|', $font_families ) ),
-            'subset' => urlencode( 'latin,cyrillic-ext,cyrillic,latin-ext' ),
+            //t 'subset' => urlencode( 'latin,cyrillic-ext,cyrillic,latin-ext' ),
         );
  
         $fonts_url = add_query_arg( $query_args, '//fonts.googleapis.com/css' );
@@ -163,31 +163,50 @@ function fcorpo_fonts_url() {
 /**
  * Display website's logo image
  */
-function fcorpo_show_website_logo_image_or_title() {
+function fcorpo_show_website_logo_image_and_title() {
 
-	if ( get_header_image() != '' ) {
-	
-		// Check if the user selected a header Image in the Customizer or the Header Menu
-		$logoImgPath = get_header_image();
-		$siteTitle = get_bloginfo( 'name' );
-		$imageWidth = get_custom_header()->width;
-		$imageHeight = get_custom_header()->height;
-		
-		echo '<a href="' . esc_url( home_url('/') ) . '" title="' . esc_attr( get_bloginfo('name') ) . '">';
-		
-		echo '<img src="' . esc_attr( $logoImgPath ) . '" alt="' . esc_attr( $siteTitle ) . '" title="' . esc_attr( $siteTitle ) . '" width="' . esc_attr( $imageWidth ) . '" height="' . esc_attr( $imageHeight ) . '" />';
-		
-		echo '</a>';
+	if ( has_custom_logo() ) {
 
-	} else {
-	
-		echo '<a href="' . esc_url( home_url('/') ) . '" title="' . esc_attr( get_bloginfo('name') ) . '">';
-		
-		echo '<h1>'.get_bloginfo('name').'</h1>';
-		
-		echo '</a>';
-		
-		echo '<strong>'.get_bloginfo('description').'</strong>';
+        the_custom_logo();
+    }
+
+    $header_text_color = get_header_textcolor();
+
+    if ( 'blank' !== $header_text_color ) {
+    
+        echo '<div id="site-identity">';
+        echo '<a href="' . esc_url( home_url('/') ) . '" title="' . esc_attr( get_bloginfo('name') ) . '">';
+        echo '<h1>'.get_bloginfo('name').'</h1>';
+        echo '</a>';
+        echo '<strong>'.get_bloginfo('description').'</strong>';
+        echo '</div>';
+    }
+}
+
+/**
+ *	Displays the header phone.
+ */
+function fcorpo_show_header_phone() {
+
+	$phone = get_theme_mod('fcorpo_header_phone', '1.555.555.555');
+
+	if ( !empty( $phone ) ) {
+
+		echo '<span id="header-phone">' . esc_html($phone) . '</span>';
+	}
+}
+
+/**
+ *	Displays the header email.
+ */
+function fcorpo_show_header_email() {
+
+	$email = get_theme_mod('fcorpo_header_email', 'info@yoursite.com');
+
+	if ( !empty( $email ) ) {
+
+		echo '<span id="header-email"><a href="mailto:' . antispambot($email, 1) . '" title="' . esc_attr($email) . '">'
+				. esc_html($email) . '</a></span>';
 	}
 }
 
@@ -219,6 +238,72 @@ function fcorpo_widgets_init() {
 						'before_title'	 =>  '<div class="sidebar-before-title"></div><h3 class="sidebar-title">',
 						'after_title'	 =>  '</h3><div class="sidebar-after-title"></div>',
 					) );
+
+	/**
+	 * Add Homepage Columns Widget areas
+	 */
+	register_sidebar( array (
+							'name'			 =>  __( 'Homepage Column #1', 'fcorpo' ),
+							'id' 			 =>  'homepage-column-1-widget-area',
+							'description'	 =>  __( 'The Homepage Column #1 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="sidebar-title">',
+							'after_title'	 =>  '</h2><div class="sidebar-after-title"></div>',
+						) );
+						
+	register_sidebar( array (
+							'name'			 =>  __( 'Homepage Column #2', 'fcorpo' ),
+							'id' 			 =>  'homepage-column-2-widget-area',
+							'description'	 =>  __( 'The Homepage Column #2 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="sidebar-title">',
+							'after_title'	 =>  '</h2><div class="sidebar-after-title"></div>',
+						) );
+
+	register_sidebar( array (
+							'name'			 =>  __( 'Homepage Column #3', 'fcorpo' ),
+							'id' 			 =>  'homepage-column-3-widget-area',
+							'description'	 =>  __( 'The Homepage Column #3 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="sidebar-title">',
+							'after_title'	 =>  '</h2><div class="sidebar-after-title"></div>',
+						) );
+
+	// Register Footer Column #1
+	register_sidebar( array (
+							'name'			 =>  __( 'Footer Column #1', 'fcorpo' ),
+							'id' 			 =>  'footer-column-1-widget-area',
+							'description'	 =>  __( 'The Footer Column #1 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="footer-title">',
+							'after_title'	 =>  '</h2><div class="footer-after-title"></div>',
+						) );
+	
+	// Register Footer Column #2
+	register_sidebar( array (
+							'name'			 =>  __( 'Footer Column #2', 'fcorpo' ),
+							'id' 			 =>  'footer-column-2-widget-area',
+							'description'	 =>  __( 'The Footer Column #2 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="footer-title">',
+							'after_title'	 =>  '</h2><div class="footer-after-title"></div>',
+						) );
+	
+	// Register Footer Column #3
+	register_sidebar( array (
+							'name'			 =>  __( 'Footer Column #3', 'fcorpo' ),
+							'id' 			 =>  'footer-column-3-widget-area',
+							'description'	 =>  __( 'The Footer Column #3 widget area', 'fcorpo' ),
+							'before_widget'  =>  '',
+							'after_widget'	 =>  '',
+							'before_title'	 =>  '<h2 class="footer-title">',
+							'after_title'	 =>  '</h2><div class="footer-after-title"></div>',
+						) );
 }
 add_action( 'widgets_init', 'fcorpo_widgets_init' );
 
@@ -267,10 +352,34 @@ function fcorpo_display_social_sites() {
 		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Google+', 'fcorpo') . '" class="google16"></a>';
 	}
 
+	$socialURL = get_theme_mod('fcorpo_social_twitter', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Twitter', 'fcorpo') . '" class="twitter16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_linkedin', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on LinkedIn', 'fcorpo') . '" class="linkedin16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_instagram', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Instagram', 'fcorpo') . '" class="instagram16"></a>';
+	}
+
 	$socialURL = get_theme_mod('fcorpo_social_rss', get_bloginfo( 'rss2_url' ));
 	if ( !empty($socialURL) ) {
 
 		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow our RSS Feeds', 'fcorpo') . '" class="rss16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_tumblr', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Tumblr', 'fcorpo') . '" class="tumblr16"></a>';
 	}
 
 	$socialURL = get_theme_mod('fcorpo_social_youtube', '#');
@@ -279,45 +388,37 @@ function fcorpo_display_social_sites() {
 		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Youtube', 'fcorpo') . '" class="youtube16"></a>';
 	}
 
+	$socialURL = get_theme_mod('fcorpo_social_pinterest', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Pinterest', 'fcorpo') . '" class="pinterest16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_vk', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on VK', 'fcorpo') . '" class="vk16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_flickr', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Flickr', 'fcorpo') . '" class="flickr16"></a>';
+	}
+
+	$socialURL = get_theme_mod('fcorpo_social_vine', '#');
+	if ( !empty($socialURL) ) {
+
+		echo '<li><a href="' . esc_url( $socialURL ) . '" title="' . __('Follow us on Vine', 'fcorpo') . '" class="vine16"></a>';
+	}
+
 	echo '</ul>';
-}
-
-/**
- * Gets additional theme settings description
- */
-function fcorpo_get_customizer_sectoin_info() {
-
-	$premiumThemeUrl = 'https://tishonator.com/product/tcorpo';
-
-	return sprintf( __( 'The fCorpo theme is a free version of the professional WordPress theme tCorpo. <a href="%s" class="button-primary" target="_blank">Get tCorpo Theme</a><br />', 'fcorpo' ), $premiumThemeUrl );
 }
 
 /**
  * Register theme settings in the customizer
  */
 function fcorpo_customize_register( $wp_customize ) {
-
-	// Header Image Section
-	$wp_customize->add_section( 'header_image', array(
-		'title' => __( 'Header Image', 'fcorpo' ),
-		'description' => fcorpo_get_customizer_sectoin_info(),
-		'theme_supports' => 'custom-header',
-		'priority' => 60,
-	) );
-
-	// Colors Section
-	$wp_customize->add_section( 'colors', array(
-		'title' => __( 'Colors', 'fcorpo' ),
-		'description' => fcorpo_get_customizer_sectoin_info(),
-		'priority' => 50,
-	) );
-
-	// Background Image Section
-	$wp_customize->add_section( 'background_image', array(
-			'title' => __( 'Background Image', 'fcorpo' ),
-			'description' => fcorpo_get_customizer_sectoin_info(),
-			'priority' => 70,
-		) );
 
 	/**
 	 * Add Slider Section
@@ -327,7 +428,6 @@ function fcorpo_customize_register( $wp_customize ) {
 		array(
 			'title'       => __( 'Slider', 'fcorpo' ),
 			'capability'  => 'edit_theme_options',
-			'description' => fcorpo_get_customizer_sectoin_info(),
 		)
 	);
 	
@@ -378,12 +478,49 @@ function fcorpo_customize_register( $wp_customize ) {
 	 * Add Footer Section
 	 */
 	$wp_customize->add_section(
-		'fcorpo_footer_section',
+		'fcorpo_header_and_footer_section',
 		array(
-			'title'       => __( 'Footer', 'fcorpo' ),
+			'title'       => __( 'Header and Footer', 'fcorpo' ),
 			'capability'  => 'edit_theme_options',
-			'description' => fcorpo_get_customizer_sectoin_info(),
 		)
+	);
+
+	// Add header phone
+	$wp_customize->add_setting(
+		'fcorpo_header_phone',
+		array(
+		    'default'           => '1.555.555.555',
+		    'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_header_phone',
+        array(
+            'label'          => __( 'Your phone to appear in the website header', 'fcorpo' ),
+            'section'        => 'fcorpo_header_and_footer_section',
+            'settings'       => 'fcorpo_header_phone',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add header email
+	$wp_customize->add_setting(
+		'fcorpo_header_email',
+		array(
+		    'default'           => 'info@yoursite.com',
+		    'sanitize_callback' => 'sanitize_text_field',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_header_email',
+        array(
+            'label'          => __( 'Your e-mail to appear in the website header', 'fcorpo' ),
+            'section'        => 'fcorpo_header_and_footer_section',
+            'settings'       => 'fcorpo_header_email',
+            'type'           => 'text',
+            )
+        )
 	);
 	
 	// Add footer copyright text
@@ -398,7 +535,7 @@ function fcorpo_customize_register( $wp_customize ) {
 	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_footer_copyright',
         array(
             'label'          => __( 'Copyright Text', 'fcorpo' ),
-            'section'        => 'fcorpo_footer_section',
+            'section'        => 'fcorpo_header_and_footer_section',
             'settings'       => 'fcorpo_footer_copyright',
             'type'           => 'text',
             )
@@ -413,7 +550,6 @@ function fcorpo_customize_register( $wp_customize ) {
 		array(
 			'title'       => __( 'Social Sites', 'fcorpo' ),
 			'capability'  => 'edit_theme_options',
-			'description' => fcorpo_get_customizer_sectoin_info(),
 		)
 	);
 	
@@ -455,6 +591,63 @@ function fcorpo_customize_register( $wp_customize ) {
         )
 	);
 
+	// Add Twitter url
+	$wp_customize->add_setting(
+		'fcorpo_social_twitter',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_twitter',
+        array(
+            'label'          => __( 'Twitter URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_twitter',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add LinkedIn url
+	$wp_customize->add_setting(
+		'fcorpo_social_linkedin',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_linkedin',
+        array(
+            'label'          => __( 'LinkedIn URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_linkedin',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add Instagram url
+	$wp_customize->add_setting(
+		'fcorpo_social_instagram',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_instagram',
+        array(
+            'label'          => __( 'LinkedIn URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_instagram',
+            'type'           => 'text',
+            )
+        )
+	);
+
 	// Add RSS Feeds url
 	$wp_customize->add_setting(
 		'fcorpo_social_rss',
@@ -469,6 +662,25 @@ function fcorpo_customize_register( $wp_customize ) {
             'label'          => __( 'RSS Feeds URL', 'fcorpo' ),
             'section'        => 'fcorpo_social_section',
             'settings'       => 'fcorpo_social_rss',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add Tumblr url
+	$wp_customize->add_setting(
+		'fcorpo_social_tumblr',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_tumblr',
+        array(
+            'label'          => __( 'Tumblr URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_tumblr',
             'type'           => 'text',
             )
         )
@@ -492,7 +704,114 @@ function fcorpo_customize_register( $wp_customize ) {
             )
         )
 	);
+
+	// Add Pinterest url
+	$wp_customize->add_setting(
+		'fcorpo_social_pinterest',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_pinterest',
+        array(
+            'label'          => __( 'Pinterest URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_pinterest',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add VK url
+	$wp_customize->add_setting(
+		'fcorpo_social_vk',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_vk',
+        array(
+            'label'          => __( 'VK URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_vk',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add Flickr url
+	$wp_customize->add_setting(
+		'fcorpo_social_flickr',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_flickr',
+        array(
+            'label'          => __( 'Flickr URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_flickr',
+            'type'           => 'text',
+            )
+        )
+	);
+
+	// Add Vine url
+	$wp_customize->add_setting(
+		'fcorpo_social_vine',
+		array(
+		    'default'           => '#',
+		    'sanitize_callback' => 'esc_url_raw',
+		)
+	);
+
+	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'fcorpo_social_vine',
+        array(
+            'label'          => __( 'Vine URL', 'fcorpo' ),
+            'section'        => 'fcorpo_social_section',
+            'settings'       => 'fcorpo_social_vine',
+            'type'           => 'text',
+            )
+        )
+	);
 }
 add_action('customize_register', 'fcorpo_customize_register');
+
+function fcorpo_header_style() {
+
+    $header_text_color = get_header_textcolor();
+
+    if ( ! has_header_image()
+        && ( get_theme_support( 'custom-header', 'default-text-color' ) === $header_text_color
+             || 'blank' === $header_text_color ) ) {
+
+        return;
+    }
+
+    $headerImage = get_header_image();
+?>
+    <style type="text/css">
+        <?php if ( has_header_image() ) : ?>
+
+                #header-main-fixed {background-image: url("<?php echo esc_url( $headerImage ); ?>");}
+
+        <?php endif; ?>
+
+        <?php if ( get_theme_support( 'custom-header', 'default-text-color' ) !== $header_text_color
+                    && 'blank' !== $header_text_color ) : ?>
+
+                #header-main-fixed {color: #<?php echo esc_attr( $header_text_color ); ?>;}
+
+        <?php endif; ?>
+    </style>
+<?php
+
+}
 
 ?>

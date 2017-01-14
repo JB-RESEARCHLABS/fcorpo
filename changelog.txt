@@ -1,3 +1,31 @@
+fCorpo 1.1.0, 2017-01-14
+------------------------
+- add full-width page template
+
+
+fCorpo 1.0.9, 2016-11-17
+------------------------
+- add custom logo
+- add 3 footer column widgets
+- bug fixes
+
+fCorpo 1.0.8, 2016-07-26
+------------------------
+- design improvements
+- add header top menu
+
+fCorpo 1.0.7, 2016-07-09
+------------------------
+- add more social icons in header
+- add phone in header
+- add email in header
+- update tags
+
+fCorpo 1.0.6, 2016-04-02
+------------------------
+- FontAwesome update
+- bug fixes
+
 fCorpo 1.0.5, 2015-10-04
 ------------------------
 - update readme.txt file

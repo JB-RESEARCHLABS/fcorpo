@@ -25,13 +25,16 @@ jQuery( document ).ready(function() {
 		}
 	});
 
-	jQuery("#navmain > div > ul li").mouseleave( function() {
+	jQuery("#navmain > div > ul li").mouseleave( function(event) {
+    event.preventDefault();
 		if (fcorpo_IsLargeResolution()) {
 			jQuery(this).children("ul").stop(true, true).css('display', 'block').slideUp(300);
 		}
 	});
 	
-	jQuery("#navmain > div > ul li").mouseenter( function() {
+	jQuery("#navmain > div > ul li").mouseenter( function(event) {
+
+    event.preventDefault();
 		if (fcorpo_IsLargeResolution()) {
 
 			var curMenuLi = jQuery(this);
@@ -50,6 +53,8 @@ jQuery( document ).ready(function() {
 			time: 4500
 		});
 	});
+
+	jQuery('#header-spacer').height(jQuery('#header-main-fixed').height());
 });
 
 function fcorpo_IsSmallResolution() {
@@ -74,8 +79,10 @@ jQuery(document).ready(function () {
   jQuery(window).scroll(function () {
 	  if (jQuery(this).scrollTop() > 100) {
 		  jQuery('.scrollup').fadeIn();
+		  jQuery('#header-top').hide();
 	  } else {
 		  jQuery('.scrollup').fadeOut();
+		  jQuery('#header-top').show();
 	  }
   });
 

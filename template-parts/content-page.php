@@ -26,11 +26,11 @@
 		<?php if ( ! post_password_required() ) : ?>
 
 	<?php if ('open' == $post->comment_status) : ?>
-			<span class="comments-icon">
+			<span>
 				<?php comments_popup_link(__( 'No Comments', 'fcorpo' ), __( '1 Comment', 'fcorpo' ), __( '% Comments', 'fcorpo' ), '', __( 'Comments are closed.', 'fcorpo' )); ?>
 			</span>
 		<?php endif; ?>
-		<?php edit_post_link( __( 'Edit', 'fcorpo' ), '<span class="edit-icon">', '</span>' ); ?>
+		<?php edit_post_link( __( 'Edit', 'fcorpo' ), '<span>', '</span>' ); ?>
 
 
 <?php endif; ?>

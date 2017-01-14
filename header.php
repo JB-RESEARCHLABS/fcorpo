@@ -4,7 +4,6 @@
  *
  * Displays all of the head element and everything up until the "body-content-wrapper" div.
  *
- * @package WordPress
  * @subpackage fCorpo
  * @author tishonator
  * @since fCorpo 1.0.0
@@ -21,16 +20,33 @@
 	<body <?php body_class(); ?>>
 		<div id="body-content-wrapper">
 			
-			<header id="header-main">
+			<header id="header-main-fixed">
 
-				<div id="header-content-wrapper">
+				<div id="header-top">
+					<div id="header-top-content">
+						<nav id="top-menu">
+							<?php wp_nav_menu( array( 'container'      => false,
+													  'theme_location' => 'top',
+													  'depth'		   => 1,
+													  'items_wrap'     => '%3$s',
+								) ); ?>
+						</nav>
 
-					<div id="header-top">
+						<?php fcorpo_show_header_phone(); ?>
+
+						<?php fcorpo_show_header_email(); ?>
+
 						<?php fcorpo_display_social_sites(); ?>
+					</div>
+				</div>
+
+				<div id="header-content-wrapper" class="header-content-spacing">
+
+					<div class="clear">
 					</div>
 
 					<div id="header-logo">
-						<?php fcorpo_show_website_logo_image_or_title(); ?>
+						<?php fcorpo_show_website_logo_image_and_title(); ?>
 					</div><!-- #header-logo -->
 
 					<nav id="navmain">
@@ -46,3 +62,6 @@
 				</div><!-- #header-content-wrapper -->
 
 			</header><!-- #header-main-fixed -->
+			<div id="header-spacer">
+				&nbsp;
+			</div><!-- #header-spacer -->
